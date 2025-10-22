@@ -1,0 +1,22 @@
+# Core dependencies
+deepface>=0.0.79
+opencv-python>=4.8.0
+opencv-contrib-python>=4.8.0
+pillow>=10.0.0
+numpy>=1.24.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+
+# Deep learning backends (DeepFace will use these)
+tensorflow>=2.13.0
+keras>=2.13.0
+
+# Additional detectors for DeepFace
+mtcnn>=0.1.1
+retina-face>=0.0.13
+
+# Image processing
+imutils>=0.5.4
+
+# Optional: for better visualization
+matplotlib>=3.7.0
