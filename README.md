@@ -19,9 +19,16 @@ Proof-of-Concept application for analyzing Brazilian National ID Card images. Th
 ### Prerequisites
 
 - Python 3.8 or higher
-- pip package manager
+- uv (fast Python package manager). If you use the setup script below, uv will be installed automatically if missing.
 
-### Setup
+### Quick setup (recommended)
+
+Run the setup script, which creates a virtual environment with uv and installs all dependencies:
+```bash
+./setup.sh
+```
+
+### Manual setup with uv
 
 1. Clone this repository:
 ```bash
@@ -29,20 +36,36 @@ git clone https://github.com/fbvidal/PoCCINQualityEval.git
 cd PoCCINQualityEval
 ```
 
-2. Create a virtual environment (recommended):
+### Install uv manually (optional)
+
+If you prefer to install uv yourself (the setup script installs it automatically when missing):
+
+- macOS via Homebrew:
 ```bash
-python3 -m venv venv
-source venv/bin/activate  # On macOS/Linux
+brew install uv
+```
+
+- Official installer (macOS/Linux):
+```bash
+curl -fsSL https://astral.sh/uv/install.sh | sh
+# Ensure uv is in PATH for the current shell session
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+2. Create and activate a virtual environment with uv:
+```bash
+uv venv venv
+source venv/bin/activate  # macOS/Linux
 # or
-venv\Scripts\activate  # On Windows
+venv\Scripts\activate    # Windows
 ```
 
-3. Install dependencies:
+3. Install dependencies with uv:
 ```bash
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 ```
 
-**Note**: The first run will download deep learning models for face detection (approximately 100-200MB). This is a one-time download.
+**Note**: The first run will download deep learning models for face detection (approximately 100–200MB). This is a one-time download.
 
 ## Usage
 
@@ -181,7 +204,7 @@ Key libraries used:
 ### Common Issues
 
 1. **"No module named 'deepface'"**
-   - Solution: Install dependencies with `pip install -r requirements.txt`
+   - Solution: Install dependencies with `uv pip install -r requirements.txt` (activate the venv first)
 
 2. **First run is slow**
    - This is normal. DeepFace downloads models on first use (~100-200MB)

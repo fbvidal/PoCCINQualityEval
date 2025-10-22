@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Setup script for PoCCINQualityEval
-# This script sets up the Python environment and installs all dependencies
+# This script sets up the Python environment and installs all dependencies using uv
 
 echo "========================================"
 echo "PoCCINQualityEval Setup"
@@ -18,9 +18,37 @@ fi
 echo "✓ Python 3 found: $(python3 --version)"
 echo ""
 
-# Create virtual environment
-echo "Creating virtual environment..."
-python3 -m venv venv
+# Check if uv is installed (fast Python package manager)
+if ! command -v uv &> /dev/null
+then
+    echo "uv not found. Attempting to install uv..."
+    if command -v brew &> /dev/null; then
+        echo "Installing uv via Homebrew..."
+        brew install uv
+        if [ $? -ne 0 ]; then
+            echo "❌ Failed to install uv via Homebrew."
+            exit 1
+        fi
+    else
+        echo "Installing uv via official installer script..."
+        curl -fsSL https://astral.sh/uv/install.sh | sh
+        if [ $? -ne 0 ]; then
+            echo "❌ Failed to install uv via installer script."
+            exit 1
+        fi
+        # Ensure ~/.local/bin is in PATH for current session (uv default install path)
+        if [ -d "$HOME/.local/bin" ]; then
+            export PATH="$HOME/.local/bin:$PATH"
+        fi
+    fi
+fi
+
+echo "✓ uv found: $(uv --version)"
+echo ""
+
+# Create virtual environment with uv
+echo "Creating virtual environment with uv..."
+uv venv venv
 
 if [ $? -ne 0 ]; then
     echo "❌ Failed to create virtual environment"
@@ -42,14 +70,10 @@ fi
 echo "✓ Virtual environment activated"
 echo ""
 
-# Upgrade pip
-echo "Upgrading pip..."
-pip install --upgrade pip
-
-# Install dependencies
+# Install dependencies with uv
 echo ""
-echo "Installing dependencies (this may take a few minutes)..."
-pip install -r requirements.txt
+echo "Installing dependencies with uv (this may take a few minutes)..."
+uv pip install -r requirements.txt
 
 if [ $? -ne 0 ]; then
     echo "❌ Failed to install dependencies"
